@@ -61,4 +61,12 @@ pub enum Commands {
 
     /// Show current configuration
     Config,
+
+    /// Install Claude Code skill for n8n workflow development
+    #[command(name = "install-claude-skill")]
+    InstallClaudeSkill {
+        /// Overwrite existing skill without prompting
+        #[arg(long, short = 'f')]
+        force: bool,
+    },
 }

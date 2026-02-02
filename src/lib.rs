@@ -6,6 +6,7 @@ pub mod editor;
 pub mod error;
 pub mod models;
 pub mod output;
+pub mod skill;
 pub mod validation;
 
 pub use cli::{Cli, Commands};

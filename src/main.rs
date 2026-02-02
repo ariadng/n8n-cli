@@ -50,6 +50,11 @@ async fn run() -> Result<()> {
         return handle_config(&config);
     }
 
+    // Handle install-claude-skill command (doesn't need API key)
+    if let Commands::InstallClaudeSkill { force } = cli.command {
+        return n8n_cli::skill::install_claude_skill(force, config.quiet);
+    }
+
     // Handle validate --file separately (doesn't need API key)
     if let Commands::Workflows(ref cmd) = cli.command {
         if let WorkflowsAction::Validate {
@@ -75,7 +80,8 @@ async fn run() -> Result<()> {
         Commands::Credentials(cmd) => handle_credentials(&client, cmd.action, &config).await,
         Commands::Tags(cmd) => handle_tags(&client, cmd.action, &config).await,
         Commands::Health(cmd) => handle_health(&client, cmd.action, &config).await,
-        Commands::Config => unreachable!(), // Handled above
+        Commands::Config => unreachable!(),              // Handled above
+        Commands::InstallClaudeSkill { .. } => unreachable!(), // Handled above
     }
 }
 

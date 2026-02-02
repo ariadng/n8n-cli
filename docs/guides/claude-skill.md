@@ -4,26 +4,27 @@ The n8n CLI includes a Claude Code skill that helps you develop, manage, and deb
 
 ## Installation
 
-### Quick Install
+### Using the CLI (Recommended)
 
-From the n8n-cli repository:
+If you have the n8n CLI installed (via Homebrew or from source):
 
 ```bash
-./install-claude-skill
+n8n install-claude-skill
 ```
 
-Or if you've added n8n-cli to your PATH:
+Use `--force` to overwrite an existing installation:
 
 ```bash
-install-claude-skill
+n8n install-claude-skill --force
 ```
 
 ### Manual Install
 
-Copy the skill to your personal Claude skills directory:
+Copy the skill files from the repository:
 
 ```bash
-cp -r .claude/skills/n8n ~/.claude/skills/
+git clone https://github.com/ariadng/n8n-cli.git
+cp -r n8n-cli/.claude/skills/n8n ~/.claude/skills/
 ```
 
 ### Verify Installation
