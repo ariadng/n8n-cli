@@ -2,11 +2,36 @@
 
 This guide walks you through installing the n8n CLI and making your first API calls.
 
-## Prerequisites
+## Installation
 
-### 1. Rust Toolchain
+### Homebrew (macOS)
 
-The n8n CLI is built with Rust. Install Rust using [rustup](https://rustup.rs/):
+The easiest way to install on macOS:
+
+```bash
+brew tap ariadng/tap
+brew install n8n-cli
+```
+
+Or in one command:
+
+```bash
+brew install ariadng/tap/n8n-cli
+```
+
+Verify installation:
+
+```bash
+n8n --help
+```
+
+### From Source
+
+If you prefer to build from source, you'll need the Rust toolchain.
+
+#### 1. Install Rust
+
+Install Rust using [rustup](https://rustup.rs/):
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -19,7 +44,19 @@ rustc --version  # Should be 1.75 or later
 cargo --version
 ```
 
-### 2. n8n Instance
+#### 2. Build and Install
+
+```bash
+git clone https://github.com/ariadng/n8n-cli.git
+cd n8n-cli
+cargo install --path .
+```
+
+This installs the `n8n` binary to `~/.cargo/bin/`.
+
+## Prerequisites
+
+### n8n Instance
 
 You need a running n8n instance with API access enabled. The CLI supports:
 
@@ -34,35 +71,6 @@ Generate an API key in your n8n instance:
 2. Click **Create API Key**
 3. Copy the generated key (you won't see it again)
 
-## Installation
-
-### From Source
-
-Clone and build:
-
-```bash
-git clone https://github.com/your-org/n8n-cli.git
-cd n8n-cli
-cargo build --release
-```
-
-The binary will be at `target/release/n8n`. Add it to your PATH:
-
-```bash
-# Option 1: Copy to a directory in PATH
-sudo cp target/release/n8n /usr/local/bin/
-
-# Option 2: Add target/release to PATH
-export PATH="$PATH:$(pwd)/target/release"
-```
-
-### Using Cargo Install
-
-```bash
-cargo install --path .
-```
-
-This installs the `n8n` binary to `~/.cargo/bin/`.
 
 ## Configuration
 

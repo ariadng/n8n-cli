@@ -81,8 +81,25 @@ n8n workflows list -o json
 n8n workflows list -o json-pretty
 ```
 
+## Installation
+
+### Homebrew (macOS)
+
+```bash
+brew tap ariadng/tap
+brew install n8n-cli
+```
+
+### From Source
+
+```bash
+git clone https://github.com/ariadng/n8n-cli.git
+cd n8n-cli
+cargo install --path .
+```
+
 ## Requirements
 
-- Rust 1.75+ (for building from source)
 - A running n8n instance with API access enabled
 - n8n API key (generated in n8n Settings > API)
+- Rust 1.75+ (only if building from source)

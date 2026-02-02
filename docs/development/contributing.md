@@ -352,11 +352,70 @@ Update `docs/` when:
 
 ## Release Process
 
-1. Update version in `Cargo.toml`
-2. Update CHANGELOG.md
-3. Create git tag: `git tag v0.1.0`
-4. Push tag: `git push origin v0.1.0`
-5. CI builds and publishes release
+### 1. Update Version
+
+```bash
+# Edit Cargo.toml
+version = "0.2.0"
+```
+
+### 2. Build Release Binary
+
+```bash
+cargo build --release
+```
+
+### 3. Create Release Tarball
+
+```bash
+mkdir -p dist
+cp target/release/n8n dist/
+cd dist && tar -czvf n8n-cli-darwin-arm64.tar.gz n8n
+```
+
+### 4. Get SHA256
+
+```bash
+shasum -a 256 dist/n8n-cli-darwin-arm64.tar.gz
+```
+
+### 5. Create GitHub Release
+
+```bash
+gh release create v0.2.0 dist/n8n-cli-darwin-arm64.tar.gz \
+  --title "v0.2.0" \
+  --notes "Release notes here"
+```
+
+### 6. Update Homebrew Formula
+
+Update `homebrew-tap/Formula/n8n-cli.rb`:
+
+```ruby
+version "0.2.0"
+url "https://github.com/ariadng/n8n-cli/releases/download/v0.2.0/n8n-cli-darwin-arm64.tar.gz"
+sha256 "NEW_SHA256_HERE"
+```
+
+### 7. Push Homebrew Update
+
+```bash
+cd homebrew-tap
+git add Formula/n8n-cli.rb
+git commit -m "chore: bump n8n-cli to v0.2.0"
+git push
+```
+
+### Homebrew Tap Repository
+
+The Homebrew tap is maintained at [ariadng/homebrew-tap](https://github.com/ariadng/homebrew-tap).
+
+Users install via:
+
+```bash
+brew tap ariadng/tap
+brew install n8n-cli
+```
 
 ## Getting Help
 
