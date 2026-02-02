@@ -1,0 +1,117 @@
+{
+  "name": "Workflow with Error Handling",
+  "nodes": [
+    {
+      "id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [250, 300],
+      "parameters": {},
+      "typeVersion": 1
+    },
+    {
+      "id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "name": "Try API Call",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [450, 300],
+      "parameters": {
+        "url": "https://api.example.com/data",
+        "method": "GET",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "typeVersion": 4,
+      "continueOnFail": true
+    },
+    {
+      "id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+      "name": "Check Success",
+      "type": "n8n-nodes-base.if",
+      "position": [650, 300],
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.error }}",
+              "operation": "isEmpty"
+            }
+          ]
+        }
+      },
+      "typeVersion": 1
+    },
+    {
+      "id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "name": "Process Success",
+      "type": "n8n-nodes-base.code",
+      "position": [850, 200],
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\nreturn [{\n  json: {\n    status: 'success',\n    data: data,\n    processedAt: new Date().toISOString()\n  }\n}];"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "name": "Handle Error",
+      "type": "n8n-nodes-base.code",
+      "position": [850, 400],
+      "parameters": {
+        "jsCode": "const error = $input.first().json;\nreturn [{\n  json: {\n    status: 'error',\n    error: error.error || 'Unknown error',\n    retryable: true,\n    failedAt: new Date().toISOString()\n  }\n}];"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "ffffffff-ffff-ffff-ffff-ffffffffffff",
+      "name": "Send Alert",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [1050, 400],
+      "parameters": {
+        "url": "https://hooks.slack.com/services/xxx/yyy/zzz",
+        "method": "POST",
+        "body": {
+          "text": "Workflow error: {{ $json.error }}"
+        }
+      },
+      "typeVersion": 4
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          { "node": "Try API Call", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Try API Call": {
+      "main": [
+        [
+          { "node": "Check Success", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Check Success": {
+      "main": [
+        [
+          { "node": "Process Success", "type": "main", "index": 0 }
+        ],
+        [
+          { "node": "Handle Error", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Handle Error": {
+      "main": [
+        [
+          { "node": "Send Alert", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "saveExecutionProgress": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all"
+  }
+}

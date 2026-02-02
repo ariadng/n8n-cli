@@ -1,0 +1,99 @@
+#!/bin/bash
+#
+# Install n8n Claude Skill
+#
+# This script installs the n8n workflow development skill to your
+# personal Claude skills directory (~/.claude/skills/n8n/).
+#
+# Usage:
+#   ./install-claude-skill
+#   # or after adding to PATH:
+#   install-claude-skill
+#
+
+set -e
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Skill info
+SKILL_NAME="n8n"
+SKILL_DIR="$HOME/.claude/skills/$SKILL_NAME"
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SOURCE_SKILL_DIR="$SCRIPT_DIR/.claude/skills/$SKILL_NAME"
+
+echo -e "${BLUE}╔════════════════════════════════════════════╗${NC}"
+echo -e "${BLUE}║     n8n Claude Skill Installer             ║${NC}"
+echo -e "${BLUE}╚════════════════════════════════════════════╝${NC}"
+echo
+
+# Check if source skill exists
+if [ ! -d "$SOURCE_SKILL_DIR" ]; then
+    echo -e "${RED}Error: Skill source not found at $SOURCE_SKILL_DIR${NC}"
+    echo "Make sure you're running this from the n8n-cli repository."
+    exit 1
+fi
+
+# Check if Claude skills directory exists
+if [ ! -d "$HOME/.claude" ]; then
+    echo -e "${YELLOW}Creating ~/.claude directory...${NC}"
+    mkdir -p "$HOME/.claude"
+fi
+
+if [ ! -d "$HOME/.claude/skills" ]; then
+    echo -e "${YELLOW}Creating ~/.claude/skills directory...${NC}"
+    mkdir -p "$HOME/.claude/skills"
+fi
+
+# Check if skill already exists
+if [ -d "$SKILL_DIR" ]; then
+    echo -e "${YELLOW}Skill '$SKILL_NAME' already exists at $SKILL_DIR${NC}"
+    read -p "Do you want to overwrite it? [y/N] " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo -e "${YELLOW}Installation cancelled.${NC}"
+        exit 0
+    fi
+    echo -e "${YELLOW}Removing existing skill...${NC}"
+    rm -rf "$SKILL_DIR"
+fi
+
+# Copy skill files
+echo -e "${BLUE}Installing skill to $SKILL_DIR...${NC}"
+cp -r "$SOURCE_SKILL_DIR" "$SKILL_DIR"
+
+# Verify installation
+if [ -f "$SKILL_DIR/SKILL.md" ]; then
+    echo
+    echo -e "${GREEN}✓ Skill '$SKILL_NAME' installed successfully!${NC}"
+    echo
+    echo -e "${BLUE}Installed files:${NC}"
+    find "$SKILL_DIR" -type f | while read -r file; do
+        echo "  - ${file#$HOME/}"
+    done
+    echo
+    echo -e "${BLUE}Usage:${NC}"
+    echo "  In Claude Code, you can now use:"
+    echo
+    echo "    /n8n create my-workflow"
+    echo "    /n8n validate workflow.json"
+    echo "    /n8n run <workflow-id>"
+    echo "    /n8n debug <workflow-id>"
+    echo
+    echo "  Or just ask Claude about n8n workflows and it will"
+    echo "  automatically use this skill to help you."
+    echo
+    echo -e "${BLUE}Documentation:${NC}"
+    echo "  https://github.com/ariadng/n8n-cli/tree/main/docs"
+    echo
+else
+    echo -e "${RED}Error: Installation verification failed.${NC}"
+    echo "SKILL.md not found at $SKILL_DIR/SKILL.md"
+    exit 1
+fi

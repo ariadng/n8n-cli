@@ -23,6 +23,7 @@ A powerful command-line interface for managing n8n workflows, executions, creden
 - [**Running Workflows**](./guides/running-workflows.md) - Execute and test workflows from the CLI
 - [**Editing Workflows**](./guides/editing-workflows.md) - Edit workflows with external editors
 - [**Scripting & Automation**](./guides/scripting.md) - Shell scripting, CI/CD, and automation patterns
+- [**Claude Skill**](./guides/claude-skill.md) - AI-assisted workflow development with Claude Code
 
 ### Development
 
