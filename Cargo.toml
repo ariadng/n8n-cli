@@ -1,0 +1,56 @@
+[package]
+name = "n8n-cli"
+version = "0.1.0"
+edition = "2024"
+authors = ["n8n CLI Developer"]
+description = "Command-line interface for the n8n workflow automation API"
+license = "MIT"
+keywords = ["n8n", "cli", "automation", "workflows"]
+categories = ["command-line-utilities"]
+
+[[bin]]
+name = "n8n"
+path = "src/main.rs"
+
+[dependencies]
+# CLI parsing
+clap = { version = "4", features = ["derive", "env", "wrap_help"] }
+
+# Async runtime
+tokio = { version = "1", features = ["full"] }
+
+# HTTP client
+reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "0.8"
+
+# Error handling
+thiserror = "2"
+
+# Configuration paths
+directories = "6"
+
+# Output formatting
+comfy-table = "7"
+
+# Utilities
+chrono = { version = "0.4", features = ["serde"] }
+url = "2"
+
+# Workflow editing
+similar = "2"
+tempfile = "3"
+uuid = { version = "1", features = ["v4"] }
+
+[dev-dependencies]
+tokio-test = "0.4"
+assert_cmd = "2"
+predicates = "3"
+
+[profile.release]
+lto = true
+strip = true
+codegen-units = 1
