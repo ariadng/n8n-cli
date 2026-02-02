@@ -99,6 +99,22 @@ n8n workflows list
 
 If successful, you'll see your workflows in a table format.
 
+### Install Claude Skill (Recommended)
+
+Install the Claude Code skill for AI-assisted workflow development:
+
+```bash
+n8n install-claude-skill
+```
+
+This enables you to develop workflows using natural language in Claude Code:
+
+```
+/n8n create a webhook workflow that sends Slack notifications
+```
+
+See [Claude Skill Guide](./guides/claude-skill.md) for more details.
+
 ### Configuration File (Optional)
 
 For more advanced setups, create a config file at `~/.config/n8n-cli/config.toml`:

@@ -1,6 +1,36 @@
 # n8n CLI Documentation
 
-A powerful command-line interface for managing n8n workflows, executions, credentials, and tags.
+A powerful command-line interface for managing n8n workflows, executions, credentials, and tags - with AI-assisted development via Claude Code.
+
+## Key Features
+
+### Claude Code Integration
+
+Develop n8n workflows using natural language with the built-in Claude skill:
+
+```bash
+# Install the Claude skill
+n8n install-claude-skill
+```
+
+Then in Claude Code:
+
+```
+/n8n create a webhook workflow that posts to Slack
+/n8n validate workflow.json
+/n8n debug wf_abc123
+```
+
+Or ask naturally: *"Help me create an n8n workflow that syncs data hourly"*
+
+[**Learn more about the Claude Skill**](./guides/claude-skill.md)
+
+### Complete Workflow Management
+
+- Create, edit, validate, and deploy workflows
+- Manage nodes and connections programmatically
+- Run and monitor executions
+- Edit workflows with your favorite editor
 
 ## Table of Contents
 
@@ -20,10 +50,10 @@ A powerful command-line interface for managing n8n workflows, executions, creden
 
 ### Guides
 
+- [**Claude Skill**](./guides/claude-skill.md) - AI-assisted workflow development with Claude Code
 - [**Running Workflows**](./guides/running-workflows.md) - Execute and test workflows from the CLI
 - [**Editing Workflows**](./guides/editing-workflows.md) - Edit workflows with external editors
 - [**Scripting & Automation**](./guides/scripting.md) - Shell scripting, CI/CD, and automation patterns
-- [**Claude Skill**](./guides/claude-skill.md) - AI-assisted workflow development with Claude Code
 
 ### Development
 
@@ -37,9 +67,38 @@ A powerful command-line interface for managing n8n workflows, executions, creden
 
 ## Quick Reference
 
+### Installation
+
+```bash
+# Homebrew (macOS)
+brew tap ariadng/tap
+brew install n8n-cli
+
+# From source
+git clone https://github.com/ariadng/n8n-cli.git
+cd n8n-cli
+cargo install --path .
+```
+
+### Configuration
+
+```bash
+# Set via environment variables
+export N8N_BASE_URL="https://n8n.example.com"
+export N8N_API_KEY="your-api-key"
+
+# Or use CLI flags
+n8n --url https://n8n.example.com --api-key your-api-key workflows list
+
+# Or use a config file (~/.config/n8n-cli/config.toml)
+```
+
 ### Common Commands
 
 ```bash
+# Install Claude skill for AI assistance
+n8n install-claude-skill
+
 # List all workflows
 n8n workflows list
 
@@ -56,19 +115,6 @@ n8n exec list -w <workflow_id>
 n8n health check
 ```
 
-### Configuration
-
-```bash
-# Set via environment variables
-export N8N_BASE_URL="https://n8n.example.com"
-export N8N_API_KEY="your-api-key"
-
-# Or use CLI flags
-n8n --url https://n8n.example.com --api-key your-api-key workflows list
-
-# Or use a config file (~/.config/n8n-cli/config.toml)
-```
-
 ### Output Formats
 
 ```bash
@@ -80,23 +126,6 @@ n8n workflows list -o json
 
 # Pretty JSON output
 n8n workflows list -o json-pretty
-```
-
-## Installation
-
-### Homebrew (macOS)
-
-```bash
-brew tap ariadng/tap
-brew install n8n-cli
-```
-
-### From Source
-
-```bash
-git clone https://github.com/ariadng/n8n-cli.git
-cd n8n-cli
-cargo install --path .
 ```
 
 ## Requirements
