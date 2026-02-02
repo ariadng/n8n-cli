@@ -4,7 +4,7 @@ version = "0.2.0"
 edition = "2024"
 authors = ["n8n CLI Developer"]
 description = "Command-line interface for the n8n workflow automation API"
-license = "MIT"
+license = "Apache-2.0"
 keywords = ["n8n", "cli", "automation", "workflows"]
 categories = ["command-line-utilities"]
 

@@ -174,4 +174,4 @@ n8n wf list -o json-pretty  # Pretty JSON
 
 ## License
 
-MIT
+Apache 2.0
